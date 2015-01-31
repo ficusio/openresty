@@ -26,6 +26,7 @@ RUN cd /root \
     --with-luajit \
     --with-pcre-jit \
     --with-ipv6 \
+    --with-http_ssl_module \
     --without-http_ssi_module \
     --without-http_userid_module \
     --without-http_fastcgi_module \
