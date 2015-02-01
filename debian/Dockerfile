@@ -49,6 +49,6 @@ RUN cd /root \
 WORKDIR /opt/openresty/nginx/
 
 ONBUILD RUN rm -rf conf/* html/*
-ONBUILD COPY nginx ./
+ONBUILD COPY nginx /opt/openresty/nginx/
 
 CMD ["nginx", "-g", "daemon off; error_log /dev/stderr info;"]
