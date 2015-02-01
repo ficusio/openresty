@@ -58,6 +58,6 @@ RUN echo "==> Installing dependencies..." \
 WORKDIR /opt/openresty/nginx/
 
 ONBUILD RUN rm -rf conf/* html/*
-ONBUILD COPY nginx /opt/openresty/nginx/
+ONBUILD COPY nginx ./
 
 CMD ["nginx", "-g", "daemon off; error_log /dev/stderr info;"]
