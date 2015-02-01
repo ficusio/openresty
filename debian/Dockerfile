@@ -6,7 +6,13 @@ RUN apt-get update \
     libreadline-dev libncurses5-dev libpcre3-dev libssl-dev \
  && rm -rf /var/lib/apt/lists/*
 
-ENV OPENRESTY_VERSION 1.7.7.1
+ENV OPENRESTY_VERSION=1.7.7.1 \
+    OPENRESTY_PREFIX=/opt/openresty \
+    NGINX_PREFIX=/opt/openresty/nginx \
+    VAR_PREFIX=/var/nginx
+
+# NginX prefix is automatically set by OpenResty to $OPENRESTY_PREFIX/nginx
+# look for $ngx_prefix in https://github.com/openresty/ngx_openresty/blob/master/util/configure
 
 RUN cd /root \
  && echo "==> Downloading OpenResty..." \
@@ -16,13 +22,13 @@ RUN cd /root \
  && readonly NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) \
  && echo "using upto $NPROC threads" \
  && ./configure \
-    --prefix=/opt/openresty \
-    --http-client-body-temp-path=/var/nginx/client_body_temp \
-    --http-proxy-temp-path=/var/nginx/proxy_temp \
-    --http-log-path=/var/nginx/access.log \
-    --error-log-path=/var/nginx/error.log \
-    --pid-path=/var/nginx/nginx.pid \
-    --lock-path=/var/nginx/nginx.lock \
+    --prefix=$OPENRESTY_PREFIX \
+    --http-client-body-temp-path=$VAR_PREFIX/client_body_temp \
+    --http-proxy-temp-path=$VAR_PREFIX/proxy_temp \
+    --http-log-path=$VAR_PREFIX/access.log \
+    --error-log-path=$VAR_PREFIX/error.log \
+    --pid-path=$VAR_PREFIX/nginx.pid \
+    --lock-path=$VAR_PREFIX/nginx.lock \
     --with-luajit \
     --with-pcre-jit \
     --with-ipv6 \
@@ -39,16 +45,16 @@ RUN cd /root \
  && echo "==> Installing OpenResty..." \
  && make install \
  && echo "==> Finishing..." \
- && ln -sf /opt/openresty/nginx/sbin/nginx /usr/local/bin/nginx \
- && ln -sf /opt/openresty/nginx/sbin/nginx /usr/local/bin/openresty \
- && ln -sf /opt/openresty/bin/resty /usr/local/bin/resty \
- && ln -sf /opt/openresty/luajit/bin/luajit-* /opt/openresty/luajit/bin/lua \
- && ln -sf /opt/openresty/luajit/bin/luajit-* /usr/local/bin/lua \
+ && ln -sf $NGINX_PREFIX/sbin/nginx /usr/local/bin/nginx \
+ && ln -sf $NGINX_PREFIX/sbin/nginx /usr/local/bin/openresty \
+ && ln -sf $OPENRESTY_PREFIX/bin/resty /usr/local/bin/resty \
+ && ln -sf $OPENRESTY_PREFIX/luajit/bin/luajit-* $OPENRESTY_PREFIX/luajit/bin/lua \
+ && ln -sf $OPENRESTY_PREFIX/luajit/bin/luajit-* /usr/local/bin/lua \
  && rm -rf /root/ngx_openresty*
 
-WORKDIR /opt/openresty/nginx/
+WORKDIR $NGINX_PREFIX/
 
 ONBUILD RUN rm -rf conf/* html/*
-ONBUILD COPY nginx /opt/openresty/nginx/
+ONBUILD COPY nginx $NGINX_PREFIX/
 
 CMD ["nginx", "-g", "daemon off; error_log /dev/stderr info;"]
