@@ -6,10 +6,10 @@ RUN apt-get update \
     libreadline-dev libncurses5-dev libpcre3-dev libssl-dev \
  && rm -rf /var/lib/apt/lists/*
 
-ENV OPENRESTY_VERSION=1.7.7.1 \
-    OPENRESTY_PREFIX=/opt/openresty \
-    NGINX_PREFIX=/opt/openresty/nginx \
-    VAR_PREFIX=/var/nginx
+ENV OPENRESTY_VERSION 1.7.7.1
+ENV OPENRESTY_PREFIX /opt/openresty
+ENV NGINX_PREFIX /opt/openresty/nginx
+ENV VAR_PREFIX /var/nginx
 
 # NginX prefix is automatically set by OpenResty to $OPENRESTY_PREFIX/nginx
 # look for $ngx_prefix in https://github.com/openresty/ngx_openresty/blob/master/util/configure
