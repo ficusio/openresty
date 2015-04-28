@@ -6,15 +6,15 @@ This repository contains Dockerfiles for [ficusio/openresty](https://registry.hu
 
 The main one is [Alpine linux](https://registry.hub.docker.com/u/alpinelinux/base/)-based `ficusio/openresty:latest`. Its virtual size is just 39MB, yet it contains a fully functional [OpenResty](http://openresty.org) bundle  v1.7.7.1 and [`apk` package manager](http://wiki.alpinelinux.org/wiki/Alpine_Linux_package_management), which allows you to easily install [lots of  pre-built packages](http://forum.alpinelinux.org/packages).
 
-The other flavor is `ficusio/openresty:debian`. It is based on `debian:wheezy` and thus is much bigger in size (256MB). It is mostly useful for NginX profiling, as it may not be easy to build different profiling tools with [`musl` libc](http://www.musl-libc.org/), which is used in Alpine Linux.
+The other flavor is `ficusio/openresty:debian`. It is based on `debian:wheezy` and thus is much bigger in size (256MB). It is mostly useful for NginX profiling, as it may not be easy to build different profiling tools with [musl libc](http://www.musl-libc.org/), which is used in Alpine Linux.
 
 ### Paths & config
 
 NginX is configured with `/opt/openresty/nginx` [prefix path](http://nginx.org/en/docs/configure.html), which means that, by default, it loads configuration from `/opt/openresty/nginx/conf/nginx.conf` file. The default HTML root path is `/opt/openresty/nginx/html/`.
 
-OpenResty bundle includes several useful Lua modules, which are located in `/opt/openresty/lualib/` directory. This directory is already added to Lua package path, so you don't need to specify it in NginX `lua_package_path` directive.
+OpenResty bundle includes several useful Lua modules located in `/opt/openresty/lualib/` directory. This directory is already present in Lua package path, so you don't need to specify it in NginX `lua_package_path` directive.
 
-NginX is built with LuaJIT 2.1, which is also available as stand-alone `lua` binary.
+The Lua NginX module is built with LuaJIT 2.1, which is also available as stand-alone `lua` binary.
 
 ### `ONBUILD` hook
 
@@ -35,7 +35,7 @@ FROM ficusio/openresty:latest
 EXPOSE 8080
 ```
 
-Check [the sample application](https://github.com/ficusio/openresty/tree/master/_example) for more complete example.
+Check [the sample application](https://github.com/ficusio/openresty/tree/master/_example) for more useful example.
 
 ### Command-line parameters
 
@@ -58,7 +58,7 @@ drwxr-xr-x    2 root     root          4096 Feb  1 14:48 sbin
 
 ### Usage during development
 
-To aviod rebuilding your Docker image after each modification of Lua code or NginX config, you can add a simple script that mounts config/content directories to appropriate locations and starts NginX:
+To avoid rebuilding your Docker image after each modification of Lua code or NginX config, you can add a simple script that mounts config/content directories to appropriate locations and starts NginX:
 
 ```bash
 #!/usr/bin/env bash

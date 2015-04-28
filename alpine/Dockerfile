@@ -1,14 +1,12 @@
-FROM alpinelinux/base:latest
+FROM alpine:3.1
 
-ENV OPENRESTY_VERSION 1.7.7.1
+ENV OPENRESTY_VERSION 1.7.10.1
 ENV OPENRESTY_PREFIX /opt/openresty
 ENV NGINX_PREFIX /opt/openresty/nginx
 ENV VAR_PREFIX /var/nginx
 
 # NginX prefix is automatically set by OpenResty to $OPENRESTY_PREFIX/nginx
 # look for $ngx_prefix in https://github.com/openresty/ngx_openresty/blob/master/util/configure
-
-COPY *.patch /root/ngx_openresty/
 
 RUN echo "==> Installing dependencies..." \
  && apk update \
@@ -20,8 +18,6 @@ RUN echo "==> Installing dependencies..." \
  && echo "==> Downloading OpenResty..." \
  && curl -sSL http://openresty.org/download/ngx_openresty-${OPENRESTY_VERSION}.tar.gz | tar -xvz \
  && cd ngx_openresty-* \
- && echo "==> Patching NginX..." \
- && { for i in ../*.patch; do echo "$i"; patch -p0 < "$i"; done } \
  && echo "==> Configuring OpenResty..." \
  && readonly NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) \
  && echo "using upto $NPROC threads" \
