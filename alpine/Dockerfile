@@ -1,4 +1,4 @@
-FROM alpinelinux/base:latest
+FROM alpine:3.1
 
 ENV OPENRESTY_VERSION 1.7.7.1
 
