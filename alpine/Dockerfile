@@ -1,4 +1,4 @@
-FROM alpine:3.1
+FROM alpine:3.2
 
 ENV OPENRESTY_VERSION 1.7.10.1
 ENV OPENRESTY_PREFIX /opt/openresty
