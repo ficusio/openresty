@@ -1,10 +1,10 @@
 # OpenResty Docker image
 
-This repository contains Dockerfiles for [ficusio/openresty](https://registry.hub.docker.com/u/ficusio/openresty/) image, which has two flavors.
+This repository contains Dockerfiles for [ficusio/openresty](https://hub.docker.com/r/ficusio/openresty/) image, which has two flavors.
 
 ### Flavors
 
-The main one is [Alpine linux](https://registry.hub.docker.com/u/alpinelinux/base/)-based `ficusio/openresty:latest`. Its virtual size is just 35MB, yet it contains a fully functional [OpenResty](http://openresty.org) bundle  v1.9.3.1 and [`apk` package manager](http://wiki.alpinelinux.org/wiki/Alpine_Linux_package_management), which allows you to easily install [lots of  pre-built packages](http://forum.alpinelinux.org/packages).
+The main one is [Alpine linux](https://hub.docker.com/r/alpinelinux/base/)-based `ficusio/openresty:latest`. Its virtual size is just 35MB, yet it contains a fully functional [OpenResty](http://openresty.org) bundle  v1.9.3.1 and [`apk` package manager](http://wiki.alpinelinux.org/wiki/Alpine_Linux_package_management), which allows you to easily install [lots of  pre-built packages](http://forum.alpinelinux.org/packages).
 
 The other flavor is `ficusio/openresty:debian`. It is based on `debian:wheezy` and thus is much bigger in size (256MB). It is mostly useful for NginX profiling, as it may not be easy to build different profiling tools with [musl libc](http://www.musl-libc.org/), which is used in Alpine Linux.
 
@@ -30,7 +30,7 @@ See [this PR](https://github.com/ficusio/openresty/pull/7) for background.
 
 ### `ONBUILD` hook
 
-This image uses [`ONBUILD` hook](https://docs.docker.com/reference/builder/#onbuild) that automatically copies all files and subdirectories from the `nginx/` directory located at the root of Docker build context (i.e. next to your `Dockerfile`) into `/opt/openresty/nginx/`. The minimal configuration needed to get NginX running is the following:
+This image uses [`ONBUILD` hook](http://docs.docker.com/engine/reference/builder/#onbuild) that automatically copies all files and subdirectories from the `nginx/` directory located at the root of Docker build context (i.e. next to your `Dockerfile`) into `/opt/openresty/nginx/`. The minimal configuration needed to get NginX running is the following:
 
 ```coffee
 project_root/
@@ -53,9 +53,9 @@ Check [the sample application](https://github.com/ficusio/openresty/tree/master/
 
 NginX is launched with the `nginx -g 'daemon off; error_log /dev/stderr info;'` command. This means that you should not specify the `daemon` directive in your `nginx.conf` file, because it will lead to NginX config check error (duplicate directive).
 
-No-daemon mode is needed to allow host OS' service manager, like `systemd`, or [Docker itself](https://docs.docker.com/reference/commandline/cli/#restart-policies) to detect that NginX has exited and restart the container. Otherwise in-container service manager would be required.
+No-daemon mode is needed to allow host OS' service manager, like `systemd`, or [Docker itself](http://docs.docker.com/engine/reference/commandline/cli/#restart-policies) to detect that NginX has exited and restart the container. Otherwise in-container service manager would be required.
 
-Error log is redirected to `stderr` to simplify debugging and log collection with tools like [progruim/logspout](https://github.com/progrium/logspout).
+Error log is redirected to `stderr` to simplify debugging and log collection with tools like [progruim/logspout](https://github.com/gliderlabs/logspout).
 
 If you wish to run it with different command-line options, you can add `CMD` directive to your Dockerfile. It will override the command provided in this image. Another option is to pass a command to `docker run` directly:
 
