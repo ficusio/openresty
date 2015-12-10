@@ -16,6 +16,18 @@ OpenResty bundle includes several useful Lua modules located in `/opt/openresty/
 
 The Lua NginX module is built with LuaJIT 2.1, which is also available as stand-alone `lua` binary.
 
+NginX stores various temporary files in `/var/nginx/` directory. If you wish to launch the container in [read-only mode](https://github.com/docker/docker/pull/10093), you need to convert that directory into volume to make it writable:
+
+```sh
+# To launch container
+docker run --name nginx --read-only -v /var/nginx ... ficusio/openresty
+
+# To remove container and its volume
+docker rm -v nginx
+```
+
+See [this PR](https://github.com/ficusio/openresty/pull/7) for background.
+
 ### `ONBUILD` hook
 
 This image uses [`ONBUILD` hook](https://docs.docker.com/reference/builder/#onbuild) that automatically copies all files and subdirectories from the `nginx/` directory located at the root of Docker build context (i.e. next to your `Dockerfile`) into `/opt/openresty/nginx/`. The minimal configuration needed to get NginX running is the following:
