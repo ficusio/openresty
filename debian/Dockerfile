@@ -25,6 +25,7 @@ RUN cd /root \
     --prefix=$OPENRESTY_PREFIX \
     --http-client-body-temp-path=$VAR_PREFIX/client_body_temp \
     --http-proxy-temp-path=$VAR_PREFIX/proxy_temp \
+    --http-fastcgi-temp-path=$VAR_PREFIX/fastcgi_temp \
     --http-log-path=$VAR_PREFIX/access.log \
     --error-log-path=$VAR_PREFIX/error.log \
     --pid-path=$VAR_PREFIX/nginx.pid \
@@ -49,6 +50,8 @@ RUN cd /root \
  && ln -sf $OPENRESTY_PREFIX/luajit/bin/luajit-* $OPENRESTY_PREFIX/luajit/bin/lua \
  && ln -sf $OPENRESTY_PREFIX/luajit/bin/luajit-* /usr/local/bin/lua \
  && rm -rf /root/ngx_openresty*
+
+VOLUME /var/nginx
 
 WORKDIR $NGINX_PREFIX/
 

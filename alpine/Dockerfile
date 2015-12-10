@@ -25,6 +25,7 @@ RUN echo "==> Installing dependencies..." \
     --prefix=$OPENRESTY_PREFIX \
     --http-client-body-temp-path=$VAR_PREFIX/client_body_temp \
     --http-proxy-temp-path=$VAR_PREFIX/proxy_temp \
+    --http-fastcgi-temp-path=$VAR_PREFIX/fastcgi_temp \
     --http-log-path=$VAR_PREFIX/access.log \
     --error-log-path=$VAR_PREFIX/error.log \
     --pid-path=$VAR_PREFIX/nginx.pid \
@@ -48,12 +49,15 @@ RUN echo "==> Installing dependencies..." \
  && ln -sf $OPENRESTY_PREFIX/bin/resty /usr/local/bin/resty \
  && ln -sf $OPENRESTY_PREFIX/luajit/bin/luajit-* $OPENRESTY_PREFIX/luajit/bin/lua \
  && ln -sf $OPENRESTY_PREFIX/luajit/bin/luajit-* /usr/local/bin/lua \
+ && echo "==> Cleaning..." \
  && apk del \
     make gcc musl-dev pcre-dev openssl-dev zlib-dev ncurses-dev readline-dev curl perl \
  && apk add \
     libpcrecpp libpcre16 libpcre32 openssl libssl1.0 pcre libgcc libstdc++ \
  && rm -rf /var/cache/apk/* \
  && rm -rf /root/ngx_openresty
+
+VOLUME /var/nginx
 
 WORKDIR $NGINX_PREFIX/
 
