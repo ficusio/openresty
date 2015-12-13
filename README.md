@@ -4,7 +4,7 @@ This repository contains Dockerfiles for [ficusio/openresty](https://hub.docker.
 
 ### Flavors
 
-The main one is [Alpine linux](https://hub.docker.com/r/alpinelinux/base/)-based `ficusio/openresty:latest`. Its virtual size is just 35MB, yet it contains a fully functional [OpenResty](http://openresty.org) bundle  v1.9.3.1 and [`apk` package manager](http://wiki.alpinelinux.org/wiki/Alpine_Linux_package_management), which allows you to easily install [lots of  pre-built packages](http://forum.alpinelinux.org/packages).
+The main one is [Alpine linux](https://hub.docker.com/_/alpine/)-based `ficusio/openresty:latest`. Its virtual size is just 31MB, yet it contains a fully functional [OpenResty](http://openresty.org) bundle v1.9.3.1 and [`apk` package manager](http://wiki.alpinelinux.org/wiki/Alpine_Linux_package_management), which allows you to easily install [lots of  pre-built packages](https://pkgs.alpinelinux.org/packages).
 
 The other flavor is `ficusio/openresty:debian`. It is based on `debian:wheezy` and thus is much bigger in size (256MB). It is mostly useful for NginX profiling, as it may not be easy to build different profiling tools with [musl libc](http://www.musl-libc.org/), which is used in Alpine Linux.
 
@@ -55,7 +55,7 @@ NginX is launched with the `nginx -g 'daemon off; error_log /dev/stderr info;'` 
 
 No-daemon mode is needed to allow host OS' service manager, like `systemd`, or [Docker itself](http://docs.docker.com/engine/reference/commandline/cli/#restart-policies) to detect that NginX has exited and restart the container. Otherwise in-container service manager would be required.
 
-Error log is redirected to `stderr` to simplify debugging and log collection with tools like [progruim/logspout](https://github.com/gliderlabs/logspout).
+Error log is redirected to `stderr` to simplify debugging and log collection with [Docker logging drivers](https://docs.docker.com/engine/reference/logging/overview/) or tools like [logspout](https://github.com/gliderlabs/logspout).
 
 If you wish to run it with different command-line options, you can add `CMD` directive to your Dockerfile. It will override the command provided in this image. Another option is to pass a command to `docker run` directly:
 
@@ -80,7 +80,7 @@ exec docker run --rm -it \
   -v "$(pwd)/nginx/conf":/opt/openresty/nginx/conf \
   -v "$(pwd)/nginx/lualib":/opt/openresty/nginx/lualib \
   -p 8080:8080 \
-  ficusio/openresty:latest "$@"
+  ficusio/openresty:debian "$@"
 
 # you may add more -v options to mount another directories, e.g. nginx/html/
 
