@@ -16,9 +16,9 @@ ENV VAR_PREFIX /var/nginx
 
 RUN cd /root \
  && echo "==> Downloading OpenResty..." \
- && curl -sSL http://openresty.org/download/ngx_openresty-${OPENRESTY_VERSION}.tar.gz | tar -xvz \
+ && curl -sSL http://openresty.org/download/openresty-${OPENRESTY_VERSION}.tar.gz | tar -xvz \
  && echo "==> Configuring OpenResty..." \
- && cd ngx_openresty-* \
+ && cd openresty-* \
  && readonly NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) \
  && echo "using upto $NPROC threads" \
  && ./configure \
