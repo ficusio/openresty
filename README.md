@@ -78,7 +78,7 @@ To avoid rebuilding your Docker image after each modification of Lua code or Ngi
 exec docker run --rm -it \
   --name my-app-dev \
   -v "$(pwd)/nginx/conf":/opt/openresty/nginx/conf \
-  -v "$(pwd)/nginx/lualib":/opt/openresty/nginx/lualib \
+  -v "$(pwd)/lualib":/opt/openresty/lualib \
   -p 8080:8080 \
   ficusio/openresty:debian "$@"
 
