@@ -6,7 +6,7 @@ RUN apt-get update \
     libreadline-dev libncurses5-dev libpcre3-dev libssl-dev \
  && rm -rf /var/lib/apt/lists/*
 
-ENV OPENRESTY_VERSION 1.9.7.3
+ENV OPENRESTY_VERSION 1.9.15.1
 ENV OPENRESTY_PREFIX /opt/openresty
 ENV NGINX_PREFIX /opt/openresty/nginx
 ENV VAR_PREFIX /var/nginx
@@ -16,7 +16,7 @@ ENV VAR_PREFIX /var/nginx
 
 RUN cd /root \
  && echo "==> Downloading OpenResty..." \
- && curl -sSL http://openresty.org/download/openresty-${OPENRESTY_VERSION}.tar.gz | tar -xvz \
+ && curl -sSL https://openresty.org/download/openresty-${OPENRESTY_VERSION}.tar.gz | tar -xvz \
  && echo "==> Configuring OpenResty..." \
  && cd openresty-* \
  && readonly NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) \
