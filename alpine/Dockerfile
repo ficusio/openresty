@@ -38,6 +38,7 @@ RUN echo "==> Installing dependencies..." \
     --without-http_userid_module \
     --without-http_uwsgi_module \
     --without-http_scgi_module \
+    --with-http_stub_status_module \
     -j${NPROC} \
  && echo "==> Building OpenResty..." \
  && make -j${NPROC} \
